@@ -11,6 +11,7 @@ typedef pair<int,int> P;
 int w,h;
 char c[100][100];
 bool used[100][100];
+int g[100][100];
 
 int INF = 1000000000;
 int d[100][100];
@@ -27,7 +28,7 @@ int bfs(P s,P e) {
         que.pop();
 
         rep(i,4) {
-            int y = p.first + dy[p.first],x = p.second + dx[p.second];
+            int y = p.first + dy[i],x = p.second + dx[i];
             if(0 <= y && y < h && 0 <= x && x < w && d[y][x] == INF && c[y][x] != 'x') {
                 d[y][x] = d[p.first][p.second] + 1;
                 que.push(P(y,x));
@@ -58,18 +59,36 @@ int main() {
         P s;
         rep(i,h)rep(j,w) if(c[i][j] == 'o')s = P(i,j);
 
+        rep(i,dt.size()) {
+            g[dt.size()][i] = g[i][dt.size()] = bfs(s,dt[i]);
+        }
+        rep(i,dt.size()) {
+            for(int j = i + 1;j < dt.size();j++) {
+                g[i][j] = g[j][i] = bfs(dt[i],dt[j]);
+            }
+        }
+        /*rep(i,dt.size()+1) {
+            rep(j,dt.size()+1) {
+                cout << g[i][j] << " ";
+            }
+            cout << endl;
+        }*/
+
         int ans = INF;
         do {
-            int sum = bfs(s,dt[0]);
+            int sum = g[dt.size()][perm[0]];
             if(sum >= INF)break;
 
             rep(i,dt.size()-1) {
-                sum += bfs(dt[i],dt[i+1]);
+                sum += g[perm[i]][perm[i+1]];
                 if(sum >= INF)break;
             }
             if(sum >= INF)break;
             ans = min(ans,sum);
         }while(next_permutation(perm,perm+dt.size()));
-        cout << ans << endl;
+        if(ans < INF)
+            cout << ans << endl;
+        else
+            cout << -1 << endl;
     }
 }
