@@ -4,6 +4,7 @@
   
   この時C(x) = 1を満たす最小のｘを返す ただしtが帰ってきたらすべて 0 ということ
 */
+//O(log(t - s))
 //参考 https://qiita.com/hamko/items/794a92c456164dcc04ad
 
 bool C(long long x) {
@@ -15,7 +16,7 @@ long long lower_bound(long long s,long long t) {
     long long lb = s - 1,ub = t;
 
     while(ub - lb > 1) {
-        long long mid = (ub + lb) / 2;
+        long long mid = (ub + lb) / 2;//ub lb がともに大きい時オーバフローするので注意
         (C(mid) ? ub : lb) = mid;
     }
     

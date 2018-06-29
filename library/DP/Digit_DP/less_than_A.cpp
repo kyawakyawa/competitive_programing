@@ -1,5 +1,6 @@
 //A以下の非負整数の数を求める
 //参考ページ https://pekempey.hatenablog.com/entry/2015/12/09/000603
+//O(logA)
 
 #include<iostream>
 #include<string>
