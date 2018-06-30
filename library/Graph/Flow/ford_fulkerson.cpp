@@ -33,8 +33,7 @@ ll dfs(ll v,ll t,ll f) {
 
     used[v] = true;
 
-    rep(i,G[v].size()) {
-        edge &e = G[v][i];
+    for(auto &e : G[v]) {
         if(!used[e.to] && e.cap > 0) {
             ll d = dfs(e.to,t,min(f,e.cap));
             if(d > 0) {
