@@ -2,7 +2,7 @@
 //O(F|E|)
 
 //参考　蟻本！
-//judge http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=GRL_6_A&lang=jp
+//verify http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=GRL_6_A&lang=jp
 
 #include<iostream>
 #include<vector>
