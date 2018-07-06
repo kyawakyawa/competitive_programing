@@ -18,14 +18,11 @@ typedef vector<Point> Poly;
 #define ft first
 #define sd second
 #define pb push_back
-int dy[]={0, 0, 1, -1, 0};
-int dx[]={1, -1, 0, 0, 0};
  
 #define FOR(i,a,b) for (int i=(a);i<(b);i++)
 #define RFOR(i,a,b) for (int i=(b)-1;i>=(a);i--)
-#define REP(i,n) for (int i=0;i<(n);i++)
-#define RREP(i,n) for (int i=(n)-1;i>=0;i--)
-#define rep(i,n) for(int i=0;i<(n);i++)
+#define rep(i,n) for (int i=0;i<(n);i++)
+#define rrep(i,n) for (int i=(n)-1;i>=0;i--)
 
 R dot(Point a,Point b){//内積ok
     return (a.real() * b.real() + a.imag() * b.imag());
@@ -159,7 +156,7 @@ Line intersection_of_two_circles(Circle c1,Circle c2){//ok ２つの円の交点
 
 int is_contains_p_in_Poly(Poly po,Point p){//点が多角形の内部(1)、境界(-1)、外部(0)のどこにあるかを判定ok
     bool in = false;
-    REP(i,po.size()){
+    rep(i,po.size()){
         Point a = currP(po,i) - p,b = nextP(po,i) - p;
         if(a.imag() > b.imag())swap(a,b);
         if(a.imag() < EPS && EPS < b.imag())
@@ -171,7 +168,7 @@ int is_contains_p_in_Poly(Poly po,Point p){//点が多角形の内部(1)、境�
 
 R area2(Poly po){//多角形の面積の二倍を求めるok
     R A = 0.0;
-    REP(i,po.size())
+    rep(i,po.size())
         A += cross(currP(po,i),nextP(po, i));
     return abs(A);//向きがが逆だと負になることがあるので絶対値
 }
