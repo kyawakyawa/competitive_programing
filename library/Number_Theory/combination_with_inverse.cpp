@@ -13,7 +13,7 @@ typedef long long ll;
 
 ll factorial[MAX_N + 1];//factorial[n] := n! mod p
 ll factorial_inverse[MAX_N+1];//factorial_inverse[n] = (n!)^-1 mod p
-ll inverse[MAX_N + 1];
+ll inverse[MAX_N + 1];//inverse[n] := 1 / n mod p
 
 void precompute_for_combination(ll n,ll p) {//前計算 階乗や階乗の逆限を求めておく
     factorial[0] = factorial[1] = 1;
