@@ -28,24 +28,29 @@ int dx[]={1, -1, 0, 0, 1, -1, -1, 1};
 #define fi first
 #define sc second
 
-long p[200],n,m,x[2000],y[2000],z[2000];
+
+long n,m,x[2000],y[2000],z[2000],p[2000];
 
 int main(){
 	cin >> n >> m;
-	REP(i,n) cin >> x[i] >> y[i] >> z[i];
 
-	REP(i,n) p[i] = x[i] + y[i] + z[i];
+	for(int i = 0;i < n;i++) cin >> x[i] >> y[i] >> z[i];
 
-	sort(p,p+n);
+	ll ans = 0;
+	for(int i = -1;i < 2;i+=2){
+		for(int j = -1;j < 2 ;j+=2) {
+			for(int k = -1;k < 2;k+=2) {
+				ll sum = 0;
+				REP(l,n)p[l] = x[l] * i + y[l] * j + z[l] * k; 
+				sort(p,p+n);
 
-	long ans1 = 0;
-	for(int i = 0;i < m;i++) {
-		ans1 += p[n-i-1];
+				REP(l,m) {
+					sum += p[n-l-1];
+				}
+				ans = max(ans,sum);
+			}
+		}
 	}
-	long ans2 = 0;
-	for(int i = 0;i < m;i++)
-		ans2 += p[i];
-
 	cout << ans << endl;
 	return 0;
 }
