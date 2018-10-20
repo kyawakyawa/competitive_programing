@@ -15,12 +15,12 @@ template<typename T> struct edge {
 };
 
 
-template<typename T> struct Graph_for_flow {
-  vector< vector<edge<T>> > G;
+template<typename T,template <typename ELEM> class C> struct Graph_for_flow {
+  vector<vector<C<T>>> G;
   vector<bool> used;
   int V,E;
 
-  Graph_for_flow(T V_) {
+  Graph_for_flow(int V_) {
     init(V_);
   }
 
@@ -39,8 +39,8 @@ template<typename T> struct Graph_for_flow {
       cerr << "warning" << endl;
     }
 
-    G[from].push_back(edge<T>(to,cap,G[to].size()));
-    G[to].push_back(edge<T>(from,0,G[from].size() - 1));
+    G[from].push_back(C<T>(to,cap,G[to].size()));
+    G[to].push_back(C<T>(from,0,G[from].size() - 1));
   }
 
   T dfs(int v,int t,T f) {
@@ -88,7 +88,7 @@ int main() {
   vector<char> ans;
 
   rep(i,26) {
-    Graph_for_flow<ll> graph(28);
+    Graph_for_flow<ll,edge> graph(28);
     int deg_out = 0,deg_in = 0;
     int s = 26,t = 27;
     rep(j,N) {
@@ -103,7 +103,7 @@ int main() {
 
     ll flow = graph.max_flow(s,t);
 
-    if(flow >= deg_out && deg_in > 0)ans.push_back(i + 'a');
+    if(flow == deg_out && deg_in > 0)ans.push_back(i + 'a');
   }
 
   for(auto v : ans) {
@@ -111,3 +111,4 @@ int main() {
   }
   return 0;
 }
+

@@ -9,7 +9,6 @@ using namespace std;
 #define rep(i,n) for(int i=0;i<(n);i++)
 
 template<typename T> struct edge {
-  using Type = T;
   int to;
   T cap;
   int rev_id;
@@ -18,8 +17,8 @@ template<typename T> struct edge {
 };
 
 
-template<class T> struct Graph_for_flow {
-  vector<vector<T>> G;
+template<typename T,template <typename ELEM> class C> struct Graph_for_flow {
+  vector<vector<C<T>>> G;
   vector<bool> used;
   int V,E;
 
@@ -37,23 +36,23 @@ template<class T> struct Graph_for_flow {
 
   }
 
-  void add_edge(int from,int to,typename T::Type cap) {
+  void add_edge(int from,int to,T cap) {
     if(from < 0 || from >= V || to < 0 || to >= V ) {
       cerr << "warning" << endl;
     }
 
-    G[from].push_back(T(to,cap,G[to].size()));
-    G[to].push_back(T(from,0,G[from].size() - 1));
+    G[from].push_back(C<T>(to,cap,G[to].size()));
+    G[to].push_back(C<T>(from,0,G[from].size() - 1));
   }
 
-  typename T::Type dfs(int v,int t,typename T::Type f) {
+  T dfs(int v,int t,T f) {
     if(v == t) return f;
 
     used[v] = true;
 
     for(auto &e : G[v]) {
       if(!used[e.to] && e.cap > 0) {
-        typename T::Type d = dfs(e.to,t,min(f,e.cap));
+        T d = dfs(e.to,t,min(f,e.cap));
         if(d > 0) {
           e.cap -= d;
           G[e.to][e.rev_id].cap += d;
@@ -64,23 +63,24 @@ template<class T> struct Graph_for_flow {
     return 0;
   }
 
-  typename T::Type max_flow(int s,int t) {
-    typename T::Type flow = 0;
+  T max_flow(int s,int t) {
+    T flow = 0;
     for(;;) {
       fill(used.begin(),used.end(),false);
-      typename T::Type f = dfs(s,t,1e9);
+      T f = dfs(s,t,1e9);
       if(f == 0)break;
       flow += f;
     }
     return flow;
   }
 };
+
 int main() {
   int V,E;
 
   cin >> V >> E;
 
-  Graph_for_flow<edge<long long> > graph(V);
+  Graph_for_flow<long long,edge> graph(V);
 
   rep(i,E) {
     long long u,v,c;
