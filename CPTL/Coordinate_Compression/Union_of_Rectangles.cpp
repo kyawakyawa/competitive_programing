@@ -1,5 +1,5 @@
 //Coordinate Compression 2Dver
-// refference https://minus9d.hatenablog.com/entry/20120623/1340457351
+// reference https://minus9d.hatenablog.com/entry/20120623/1340457351
 // verify https://onlinejudge.u-aizu.ac.jp/courses/library/5/GRL/2/GRL_2_A
 #include<iostream>
 #include<vector>

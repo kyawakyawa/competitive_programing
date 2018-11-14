@@ -1,5 +1,5 @@
 // ford fulkerson algorithm
-// refference Programming Contest Challenge Book Second Edition
+// reference Programming Contest Challenge Book Second Edition
 // verify https://onlinejudge.u-aizu.ac.jp/courses/library/5/GRL/2/GRL_2_A
 #include<iostream>
 #include<vector>
