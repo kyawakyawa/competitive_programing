@@ -3,7 +3,6 @@
 //verify https://onlinejudge.u-aizu.ac.jp/courses/library/3/DSL/2/DSL_2_B
 #include <iostream>
 #include <vector>
-#include <cmath>
 #include <algorithm>
 
 using namespace std;
@@ -13,7 +12,7 @@ using namespace std;
 template <typename T>
 struct RSQ {
   T n;
-  T k;//`バケットの数
+  T k;//バケットの数
   T sqrt_n;//バケットの大きさ
   vector<T> data;
   vector<T> bucket_sum;
