@@ -1,6 +1,14 @@
 //素数を法とするライブラリ
 
 
+//select verify
+#define _AGC025B
+
+//select combination
+//#define _NORMAL
+#define _WITH_INVERSE
+
+
 #include <iostream>
 #include <vector>
 #include <cstdlib>
@@ -20,7 +28,7 @@ bool is_prime(T n){
     return true;
   if(n % 2 == 0)
     return false;
-  for(int i = 3;i <= (int)(sqrt(n) + 0.1);i += 2){
+  for(int i = 3;i * i <= n;i += 2){
     if(n % i == 0){
       f = false;
       break;
@@ -51,6 +59,29 @@ T mod_pow(T x, T n, T mod) {
     n >>= 1;
   }
   return res;
+}
+
+template<typename T>
+pair<vector<T>,vector<T>> prime_factor(T n) { // Factoring 素因数分解
+  vector<T> p,e;
+  T m = n;
+
+  for (T i = 2;i * i <= n; i++) {
+    if (m % i != 0) continue;
+    T c = 0;
+    while(m % i == 0) {
+      c++;
+      m /= i;
+    }
+    p.push_back(i);
+    e.push_back(c);
+  }
+  if (m > 1) {
+    p.push_back(m);
+    e.push_back(1);
+  }
+
+  return make_pair(p,e);
 }
 
 template<typename T = long long>
@@ -93,12 +124,12 @@ struct Zp {
     if (p != m.p) cerr << "warning! 法が違う" << endl;
     return Zp(n-m.n,m.p);
   }
-  
+
   Zp operator * (const Zp &m) const {
     if (p != m.p) cerr << "warning! 法が違う" << endl;
     return Zp(n*m.n,m.p);
   }
-  
+
   Zp operator / (const Zp &m) const {
     if (p != m.p) cerr << "warning! 法が違う" << endl;
     if (m.n == 0) cerr << "warning! 0わり" << endl;
@@ -113,25 +144,25 @@ struct Zp {
     return Zp(n%m.n,m.p);
   }
 
-	Zp& operator +=(const Zp& m){
+  Zp& operator +=(const Zp& m){
     return *this = *this + m;
-	}
+  }
 
-	Zp& operator -=(const Zp& m){
+  Zp& operator -=(const Zp& m){
     return *this = *this - m;
-	}
+  }
 
-	Zp& operator *=(const Zp& m){
-		return *this = *this * m;
-	}
+  Zp& operator *=(const Zp& m){
+    return *this = *this * m;
+  }
 
-	Zp& operator /=(const Zp& m){
-		return *this = *this / m;
-	}
+  Zp& operator /=(const Zp& m){
+    return *this = *this / m;
+  }
 
-	Zp& operator %=(const Zp& m){
-		return *this = *this % m;
-	}
+  Zp& operator %=(const Zp& m){
+    return *this = *this % m;
+  }
 
   Zp pow(const T m) const { //m乗を計算
     return Zp(mod_pow(n,m,p),p);
@@ -172,25 +203,25 @@ struct Zp {
     return Zp(n>>m.n,m.p);
   }
 
-	Zp& operator &=(const Zp& m){
+  Zp& operator &=(const Zp& m){
     return *this = *this & m;
-	}
+  }
 
-	Zp& operator |=(const Zp& m){
+  Zp& operator |=(const Zp& m){
     return *this = *this | m;
-	}
+  }
 
-	Zp& operator ^=(const Zp& m){
-		return *this = *this ^ m;
-	}
+  Zp& operator ^=(const Zp& m){
+    return *this = *this ^ m;
+  }
 
-	Zp& operator <<=(const Zp& m){
-		return *this = *this << m;
-	}
+  Zp& operator <<=(const Zp& m){
+    return *this = *this << m;
+  }
 
-	Zp& operator >>=(const Zp& m){
-		return *this = *this >> m;
-	}
+  Zp& operator >>=(const Zp& m){
+    return *this = *this >> m;
+  }
 
 };
 
@@ -240,6 +271,7 @@ struct Combination {
     return factorial[n_] * factorial_inverse[k_] * factorial_inverse[n_-k_];
   }
 };
+#endif
 #ifdef _WITH_INVERSE
 template<typename T = long long>
 struct Combination {
@@ -256,8 +288,18 @@ struct Combination {
 
   void init(T n_,T p_) {
     n = n_;p = p_;
-    factorial[0] = factorial[1] = Zp<T> (0,p);
-    factorial_inverse[0] = factorial_inverse[1] - 1;
+    factorial.clear();factorial_inverse.clear();inverse.clear();
+    factorial.resize(n+1);factorial_inverse.resize(n+1);inverse.resize(n+1);
+
+    factorial[0] = factorial[1] = 
+      factorial_inverse[0] = factorial_inverse[1] = 
+      inverse[1] = Zp<T>(1,p);
+
+    for (int i = 2;i <= n;i++) {
+      factorial[i] = factorial[i - 1] * Zp<T>(i,p);
+      inverse[i] = Zp<T>(i,p).inverse();
+      factorial_inverse[i] = factorial_inverse[i - 1] * inverse[i];
+    }
   }
 
   Zp<T> calc(T n_,T k_) {
@@ -266,8 +308,10 @@ struct Combination {
   }
 };
 #endif
-using ll = long long;
 
+#ifdef _AGC025B
+
+using ll = long long;
 int main() {
   ll N,A,B,K;
   cin >> N >> A >> B >> K;
@@ -284,3 +328,4 @@ int main() {
 
   cout << ans.get() << endl;
 }
+#endif
