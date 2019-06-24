@@ -63,10 +63,11 @@ int main(void) {
 
   ll c = 0;
   rep (i,N) {
-    if (!game(SA[0], SB[0], A[i], B[i]))c++;
+    if (s == i) continue;
+    if (game(SA[0], SB[0], A[i], B[i]) <= 0)c++;
   }
 
-  if (c < 2) cout << s + 1 << endl;
+  if (c < 1) cout << s + 1 << endl;
   else cout << -1 << endl;
 
   return 0;
