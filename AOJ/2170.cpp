@@ -71,6 +71,7 @@ void Init(void) {
   col.resize(N);
   rep (i,N) col[i] = -1;
   set<int> S;
+  S.insert(0);
   for (auto &op:ops) { // 同じノードを複数回塗るときは最初のクエリだけ有効にする
     if (op.com == 'Q') continue;
     if (S.find(op.idx) != S.end()) {
